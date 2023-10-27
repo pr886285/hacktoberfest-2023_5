@@ -1,0 +1,47 @@
+Given a 2D binary matrix A(0-based index) of dimensions NxM. Find the minimum number of steps required to reach from (0,0) to (X, Y).
+Note: You can only move left, right, up and down, and only through cells that contain 1.
+
+Example 1:
+
+Input:
+N=3, M=4
+A=[[1,0,0,0], 
+   [1,1,0,1],
+   [0,1,1,1]]
+X=2, Y=3 
+Output:
+5
+Explanation:
+The shortest path is as follows:
+(0,0)->(1,0)->(1,1)->(2,1)->(2,2)->(2,3).
+
+
+
+
+def minSteps(N, M, A, X, Y):
+    dx = [1, -1, 0, 0]
+    dy = [0, 0, 1, -1]
+    
+    queue = [(0, 0, 0)]
+    visited = [[False] * M for _ in range(N)]
+    visited[0][0] = True
+    
+    while queue:
+        x, y, steps = queue.pop(0)
+        
+        if x == X and y == Y:
+            return steps
+        
+        for i in range(4):
+            nx, ny = x + dx[i], y + dy[i]
+            
+            if 0 <= nx < N and 0 <= ny < M and A[nx][ny] == 1 and not visited[nx][ny]:
+                queue.append((nx, ny, steps + 1))
+                visited[nx][ny] = True
+
+# Example usage
+N, M = 3, 4
+A = [[1, 0, 0, 0], [1, 1, 0, 1], [0, 1, 1, 1]]
+X, Y = 2, 3
+result = minSteps(N, M, A, X, Y)
+print(result)
